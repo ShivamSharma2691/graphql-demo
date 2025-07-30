@@ -1,0 +1,125 @@
+Course Query:
+
+query{ 
+  courses {
+    totalCount
+    nodes {
+      name
+      subject
+      instructor {
+        id
+        firstName
+      }
+    }
+  }
+  instructors {
+    nodes {
+      id
+      firstName
+      lastName
+
+    }   
+  }
+}
+
+Course Mutation:
+
+mutation {
+	createCourse(courseInput: { name: "Vectors", subject: MATHEMATICS, instructorId: "d5b43e17-cbbf-4d12-a5ab-08dda6fb355e" }) {
+		id
+		name
+		subject
+	}
+}
+
+Update Course Mutation:
+mutation{
+  updateCourse(id : "3c32731a-191c-487b-534e-08ddc2ffafce",
+         courseInput: { name: "Calculas", subject: MATHEMATICS, instructorId:"8863ed3f-9f97-4882-a5aa-08dda6fb355e"}
+         ) {
+    id
+    name
+  }
+}
+
+Instructor Mutation:
+mutation{
+  createInstructor(instructorInput: { firstName: "William", lastName: "Atkinson", salary: 8000 }) {
+    id,
+    firstName,
+    lastName,
+    salary
+  }
+}
+
+Subscription:
+# subscription{
+#   courseCreated {
+#     id
+#     instructorId
+#   }
+# }
+
+subscription{
+  courseUpdated(courseId: "3c32731a-191c-487b-534e-08ddc2ffafce") {
+    id
+    name
+    subject
+  }
+}
+
+Filters:
+query {
+  courses(
+    where: {
+      or: [
+        { name: { contains: "World" } },
+        { name: { contains: "Algebra" } }
+      ],
+      and: [
+        { subject: { eq:  HISTORY } },
+      ]
+    },
+    order: [
+      { name: ASC }
+    ]
+  ) {
+     nodes {
+        id
+        name
+        subject
+     } 
+     totalCount
+  }
+}
+
+query {
+  courses(first: 2, 
+    where: {
+      or: [
+        { name: { contains: "World" } },
+        { name: { contains: "Algebra" } }
+      ],
+      and: [
+        { subject: { eq:  HISTORY } },
+      ]
+    },
+    order: [
+      { name: ASC }
+    ]
+  ) {
+     nodes {
+        id
+        name
+        subject
+     } 
+     pageInfo {
+  endCursor
+  hasNextPage
+      }
+      totalCount
+  }
+}
+
+
+

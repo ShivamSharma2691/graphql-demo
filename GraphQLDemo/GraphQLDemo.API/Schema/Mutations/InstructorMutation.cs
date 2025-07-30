@@ -16,7 +16,7 @@ namespace GraphQLDemo.API.Schema.Mutations
     [ExtendObjectType(typeof(Mutation))]
     public class InstructorMutation
     {
-        [Authorize]
+        //[Authorize]
         [UseDbContext(typeof(SchoolDbContext))]
         public async Task<InstructorResult> CreateInstructor(
             [UseFluentValidation, UseValidator<InstructorTypeInputValidator>] InstructorTypeInput instructorInput,
@@ -46,7 +46,7 @@ namespace GraphQLDemo.API.Schema.Mutations
             return instructorResult;
         }
 
-        [Authorize]
+        //[Authorize]
         [UseDbContext(typeof(SchoolDbContext))]
         public async Task<InstructorResult> UpdateInstructor(
             Guid id,
@@ -78,7 +78,7 @@ namespace GraphQLDemo.API.Schema.Mutations
             return instructorResult;
         }
 
-        [Authorize(Policy = "IsAdmin")]
+        //[Authorize(Policy = "IsAdmin")]
         [UseDbContext(typeof(SchoolDbContext))]
         public async Task<bool> DeleteInstructor(Guid id, [ScopedService] SchoolDbContext context)
         {

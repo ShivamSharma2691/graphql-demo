@@ -30,14 +30,11 @@ namespace GraphQLDemo.API.Schema.Mutations
             _coursesRepository = coursesRepository;
         }
 
-        [Authorize]
-        [UseUser]
         public async Task<CourseResult> CreateCourse(
             [UseFluentValidation, UseValidator<CourseTypeInputValidator>] CourseTypeInput courseInput,
-            [Service] ITopicEventSender topicEventSender,
-            [User] User user)
+            [Service] ITopicEventSender topicEventSender)
         {
-            string userId = user.Id;
+            string userId = Guid.NewGuid().ToString();// user.Id;
 
             CourseDTO courseDTO = new CourseDTO()
             {
@@ -62,14 +59,11 @@ namespace GraphQLDemo.API.Schema.Mutations
             return course;
         }
 
-        [Authorize]
-        [UseUser]
         public async Task<CourseResult> UpdateCourse(Guid id,
             [UseFluentValidation, UseValidator<CourseTypeInputValidator>] CourseTypeInput courseInput,
             [Service] ITopicEventSender topicEventSender,
-            [User] User user)
+            User user)
         {
-            string userId = user.Id;
 
             CourseDTO courseDTO = await _coursesRepository.GetById(id);
 
@@ -78,12 +72,12 @@ namespace GraphQLDemo.API.Schema.Mutations
                 throw new GraphQLException(new Error("Course not found.", "COURSE_NOT_FOUND"));
             }
 
-            if (courseDTO.CreatorId != userId)
-            {
-                throw new GraphQLException(new Error("You do not have permission to update this course.", "INVALID_PERMISSION"));
-            }
+			//if (courseDTO.CreatorId != user.Id)
+			//{
+			//    throw new GraphQLException(new Error("You do not have permission to update this course.", "INVALID_PERMISSION"));
+			//}
 
-            courseDTO.Name = courseInput.Name;
+			courseDTO.Name = courseInput.Name;
             courseDTO.Subject = courseInput.Subject;
             courseDTO.InstructorId = courseInput.InstructorId;
 

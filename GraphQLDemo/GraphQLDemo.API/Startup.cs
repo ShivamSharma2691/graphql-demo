@@ -61,16 +61,8 @@ namespace GraphQLDemo.API
                 {
                     o.UseDefaultErrorMapper();
                 });
+                //.ModifyRequestOptions(opt => opt.MaxExecutionDepth = 5);
             
-            services.AddSingleton(FirebaseApp.Create(new AppOptions()
-            {
-                Credential = GoogleCredential.FromJson(_configuration.GetValue<string>("FIREBASE_CONFIG"))
-            }));
-            services.AddFirebaseAuthentication();
-            services.AddAuthorization(
-                o => o.AddPolicy("IsAdmin",
-                    p => p.RequireClaim(FirebaseUserClaimType.EMAIL, "singletonsean4@gmail.com")));
-
             services.AddInMemorySubscriptions();
 
             string connectionString = _configuration.GetConnectionString("default");
@@ -79,7 +71,7 @@ namespace GraphQLDemo.API
             services.AddScoped<CoursesRepository>();
             services.AddScoped<InstructorsRepository>();
             services.AddScoped<InstructorDataLoader>();
-            services.AddScoped<UserDataLoader>();
+            //services.AddScoped<UserDataLoader>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -91,7 +83,7 @@ namespace GraphQLDemo.API
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
 
             app.UseWebSockets();
 

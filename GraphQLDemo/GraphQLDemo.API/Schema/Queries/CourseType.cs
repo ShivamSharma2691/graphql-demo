@@ -22,11 +22,24 @@ namespace GraphQLDemo.API.Schema.Queries
         [IsProjected(true)]
         public Guid InstructorId { get; set; }
 
+        //[GraphQLNonNullType]
+        //public async Task<InstructorType> Instructor([Service] InstructorsRepository instructorRepository)
+        //{
+        //    var instructorDto = await instructorRepository.GetById(InstructorId);
+        //    return new InstructorType
+        //    {
+        //        Id = instructorDto.Id,
+        //        FirstName = instructorDto.FirstName,
+        //        LastName = instructorDto.LastName,
+        //        Salary = instructorDto.Salary
+        //    };
+        //}
+
         [GraphQLNonNullType]
         public async Task<InstructorType> Instructor([Service] InstructorDataLoader instructorDataLoader)
         {
             InstructorDTO instructorDTO = await instructorDataLoader.LoadAsync(InstructorId, CancellationToken.None);
-            
+
             return new InstructorType()
             {
                 Id = instructorDTO.Id,
@@ -41,14 +54,14 @@ namespace GraphQLDemo.API.Schema.Queries
         [IsProjected(true)]
         public string CreatorId { get; set; }
 
-        public async Task<UserType> Creator([Service] UserDataLoader userDataLoader)
-        {
-            if(CreatorId == null)
-            {
-                return null;
-            }
+        //public async Task<UserType> Creator([Service] UserDataLoader userDataLoader)
+        //{
+        //    if(CreatorId == null)
+        //    {
+        //        return null;
+        //    }
 
-            return await userDataLoader.LoadAsync(CreatorId, CancellationToken.None);
-        }
+        //    return await userDataLoader.LoadAsync(CreatorId, CancellationToken.None);
+        //}
     }
 }

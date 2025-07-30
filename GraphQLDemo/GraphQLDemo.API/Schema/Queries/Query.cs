@@ -40,8 +40,5 @@ namespace GraphQLDemo.API.Schema.Queries
                 .Concat(courses)
                 .Concat(instructors);
         }
-
-        [GraphQLDeprecated("This query is deprecated.")]
-        public string Instructions => "Smash that like button and subscribe to SingletonSean";
     }
 }
